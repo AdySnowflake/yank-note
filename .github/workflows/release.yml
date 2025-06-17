@@ -48,3 +48,12 @@ jobs:
         run: |
           yarn run electron-builder --${{ matrix.platform }} -p never | sed 's/identityName=.*$//'
           if (!(Test-Path out/win-unpacked/resources/app.asar.unpacked/node_modules/node-pty/build/Release/pty.node)) { throw 'node-pty not exist' }
+
+      - name: Upload Windows Artifacts
+        if: matrix.platform == 'win'
+        uses: actions/upload-artifact@v3
+        with:
+          name: windows-release
+          path: |
+            out/*.exe
+            out/*.zip
